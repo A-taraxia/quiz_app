@@ -47,28 +47,29 @@ class DefaultFirebaseOptions {
   }
 
   static const FirebaseOptions web = FirebaseOptions(
-    apiKey: 'AIzaSyDuuR8tbsgUabwG92kqg_1_lu95w9_u1kw',
-    appId: '1:178112894436:web:f9c1647933b074147663f1',
-    messagingSenderId: '178112894436',
-    projectId: 'quiz-app-77d37',
-    authDomain: 'quiz-app-77d37.firebaseapp.com',
-    storageBucket: 'quiz-app-77d37.appspot.com',
+    apiKey: 'AIzaSyCMCL1QRnJ4Gby9-z9otayDygDnkQogPBY',
+    appId: '1:626137820503:web:a5fcf01483359876bc2212',
+    messagingSenderId: '626137820503',
+    projectId: 'quizapp-3b15c',
+    authDomain: 'quizapp-3b15c.firebaseapp.com',
+    storageBucket: 'quizapp-3b15c.appspot.com',
   );
 
   static const FirebaseOptions android = FirebaseOptions(
-    apiKey: 'AIzaSyDG6NrkK7rPx49HecC7X3DP8OmK_SLbpqw',
-    appId: '1:178112894436:android:f114b2dd3ef437407663f1',
-    messagingSenderId: '178112894436',
-    projectId: 'quiz-app-77d37',
-    storageBucket: 'quiz-app-77d37.appspot.com',
+    apiKey: 'AIzaSyD9XL8n5VVEaViHNmVvLVswS6ZH2vIAGO0',
+    appId: '1:626137820503:android:c9ae7fd3a8c56b2ebc2212',
+    messagingSenderId: '626137820503',
+    projectId: 'quizapp-3b15c',
+    storageBucket: 'quizapp-3b15c.appspot.com',
   );
 
   static const FirebaseOptions windows = FirebaseOptions(
-    apiKey: 'AIzaSyDuuR8tbsgUabwG92kqg_1_lu95w9_u1kw',
-    appId: '1:178112894436:web:696947cac4374a137663f1',
-    messagingSenderId: '178112894436',
-    projectId: 'quiz-app-77d37',
-    authDomain: 'quiz-app-77d37.firebaseapp.com',
-    storageBucket: 'quiz-app-77d37.appspot.com',
+    apiKey: 'AIzaSyCMCL1QRnJ4Gby9-z9otayDygDnkQogPBY',
+    appId: '1:626137820503:web:e125245a70eb4a07bc2212',
+    messagingSenderId: '626137820503',
+    projectId: 'quizapp-3b15c',
+    authDomain: 'quizapp-3b15c.firebaseapp.com',
+    storageBucket: 'quizapp-3b15c.appspot.com',
   );
+
 }

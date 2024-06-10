@@ -46,9 +46,9 @@ class _LoginPageState extends State<LoginPage> {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             Icon(
-              Icons.delivery_dining,
+              Icons.login,
               size: 72,
-              color: Theme.of(context).colorScheme.inversePrimary,
+              color: Theme.of(context).colorScheme.primary,
             ),
             const SizedBox(height: 25),
             Text(

@@ -1,21 +1,59 @@
 {
   "project_info": {
-    "project_number": "178112894436",
-    "project_id": "quiz-app-77d37",
-    "storage_bucket": "quiz-app-77d37.appspot.com"
+    "project_number": "626137820503",
+    "project_id": "quizapp-3b15c",
+    "storage_bucket": "quizapp-3b15c.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:178112894436:android:f114b2dd3ef437407663f1",
+        "mobilesdk_app_id": "1:626137820503:android:05ec067642250b3fbc2212",
         "android_client_info": {
-          "package_name": "com.example.app"
+          "package_name": "com.example.food_delivery_app"
         }
       },
       "oauth_client": [],
       "api_key": [
         {
-          "current_key": "AIzaSyDG6NrkK7rPx49HecC7X3DP8OmK_SLbpqw"
+          "current_key": "AIzaSyD9XL8n5VVEaViHNmVvLVswS6ZH2vIAGO0"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:626137820503:android:c9ae7fd3a8c56b2ebc2212",
+        "android_client_info": {
+          "package_name": "com.example.quiz_app"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyD9XL8n5VVEaViHNmVvLVswS6ZH2vIAGO0"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:626137820503:android:8c9fbb4054e3cacdbc2212",
+        "android_client_info": {
+          "package_name": "com.example.quizapp"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyD9XL8n5VVEaViHNmVvLVswS6ZH2vIAGO0"
         }
       ],
       "services": {
