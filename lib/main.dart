@@ -26,7 +26,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-      home: HomePage(),
+      home: const HomePage(nickname: 'Athina',),
       //home: const AuthGate(),
       theme: Provider.of<ThemeProvider>(context).themeData,
     );

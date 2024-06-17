@@ -6,11 +6,11 @@ class LeaderboardTile extends StatelessWidget {
   final String score;
 
   const LeaderboardTile({
-    Key? key,
+    super.key,
     required this.imageUrl,
     required this.name,
     required this.score,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {

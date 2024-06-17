@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:quiz_app/components/my_button.dart';
 import 'package:quiz_app/components/my_textfield.dart';
@@ -21,14 +22,28 @@ class _LoginPageState extends State<LoginPage> {
 
   void login() async {
     try {
+      UserCredential userCredential =
       await _authServices.signInWithEmailPassword(
         emailController.text,
         passwordController.text,
       );
-      Navigator.push(
-        context,
-        MaterialPageRoute(builder: (context) => const HomePage()),
-      );
+
+      // Get UID
+      final uid = userCredential.user?.uid;
+
+      if (uid != null) {
+        String? nickname = await _authServices.getNicknameFromFirestore(uid);
+        if (nickname != null) {
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) => HomePage(nickname: nickname),
+            ),
+          );
+        } else {
+          // Handle case where nickname is not found
+        }
+      }
     } catch (e) {
       // Show an error message if login fails
       ScaffoldMessenger.of(context).showSnackBar(
@@ -36,6 +51,7 @@ class _LoginPageState extends State<LoginPage> {
       );
     }
   }
+
 
   @override
   Widget build(BuildContext context) {
@@ -52,7 +68,7 @@ class _LoginPageState extends State<LoginPage> {
             ),
             const SizedBox(height: 25),
             Text(
-              "Food Delivery App",
+              "Online Courses",
               style: TextStyle(
                 fontSize: 16,
                 color: Theme.of(context).colorScheme.inversePrimary,

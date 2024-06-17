@@ -18,9 +18,9 @@ class _RegisterPageState extends State<RegisterPage> {
   final TextEditingController emailController = TextEditingController();
   final TextEditingController passwordController = TextEditingController();
   final TextEditingController confirmpasswordController =
-      TextEditingController();
+  TextEditingController();
   final TextEditingController nicknameController =
-      TextEditingController(); // Add this line
+  TextEditingController(); // Add this line
 
   // Create an instance of AuthServices
   final AuthServices _authServices = AuthServices();
@@ -28,9 +28,8 @@ class _RegisterPageState extends State<RegisterPage> {
   void register() async {
     if (passwordController.text == confirmpasswordController.text) {
       try {
-        // Sign up user and get the UID
         UserCredential userCredential =
-            await _authServices.signUpWithEmailPassword(
+        await _authServices.signUpWithEmailPassword(
           emailController.text,
           passwordController.text,
         );
@@ -39,14 +38,19 @@ class _RegisterPageState extends State<RegisterPage> {
         final uid = userCredential.user?.uid;
 
         if (uid != null) {
-          // Save nickname and UID in Firestore
           await _authServices.saveUserToFirestore(uid, nicknameController.text);
+          String? nickname = await _authServices.getNicknameFromFirestore(uid);
+          if (nickname != null) {
+            Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (context) => HomePage(nickname: nickname),
+              ),
+            );
+          } else {
+            // Handle case where nickname is not found
+          }
         }
-
-        Navigator.push(
-          context,
-          MaterialPageRoute(builder: (context) => const HomePage()),
-        );
       } catch (e) {
         // Show an error message if registration fails
         ScaffoldMessenger.of(context).showSnackBar(
@@ -60,6 +64,7 @@ class _RegisterPageState extends State<RegisterPage> {
       );
     }
   }
+
 
   @override
   Widget build(BuildContext context) {
@@ -77,7 +82,7 @@ class _RegisterPageState extends State<RegisterPage> {
               ),
               const SizedBox(height: 25),
               Text(
-                "Food Delivery App",
+                "Online Courses",
                 style: TextStyle(
                   fontSize: 16,
                   color: Theme.of(context).colorScheme.inversePrimary,

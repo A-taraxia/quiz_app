@@ -3,6 +3,7 @@ import 'package:quiz_app/components/my_drawer_tile.dart';
 import 'package:quiz_app/pages/login_page.dart';
 import 'package:quiz_app/pages/settings_page.dart';
 import 'package:quiz_app/services/auth/auth_services.dart';
+import 'package:quiz_app/pages/register_page.dart'; // Import the RegisterPage
 
 class MyDrawer extends StatelessWidget {
   const MyDrawer({super.key});
@@ -56,8 +57,22 @@ class MyDrawer extends StatelessWidget {
                 Navigator.pushAndRemoveUntil(
                   context,
                   MaterialPageRoute(
-                      builder: (context) => const LoginPage(onTap: null)),
-                  (Route<dynamic> route) => false,
+                    builder: (context) => LoginPage(
+                      onTap: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => RegisterPage(
+                              onTap: () {
+                                Navigator.pop(context);
+                              },
+                            ),
+                          ),
+                        );
+                      },
+                    ),
+                  ),
+                      (Route<dynamic> route) => false,
                 );
               } catch (e) {
                 ScaffoldMessenger.of(context).showSnackBar(

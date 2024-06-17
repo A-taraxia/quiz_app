@@ -9,6 +9,21 @@ class AuthServices {
     return _firebaseAuth.currentUser;
   }
 
+  Future<String?> getNicknameFromFirestore(String uid) async {
+    try {
+      DocumentSnapshot<Map<String, dynamic>> userSnapshot =
+      await _firestore.collection('users').doc(uid).get();
+      if (userSnapshot.exists) {
+        return userSnapshot.data()?['nickname'];
+      } else {
+        return null; // User document doesn't exist
+      }
+    } catch (e) {
+      print('Error fetching nickname from Firestore: $e');
+      return null; // Return null in case of any errors
+    }
+  }
+
   Future<UserCredential> signInWithEmailPassword(
       String email, String password) async {
     try {

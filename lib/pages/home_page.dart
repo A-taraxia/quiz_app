@@ -1,42 +1,91 @@
 import 'package:flutter/material.dart';
 import 'package:quiz_app/components/my_drawer.dart';
+import 'package:quiz_app/containers/quizzes_container.dart';
+
+import '../containers/home_container.dart'; // Import the HomeContainer
 
 class HomePage extends StatefulWidget {
-  const HomePage({Key? key}) : super(key: key);
+  final String nickname;
+
+  const HomePage({super.key, required this.nickname});
 
   @override
   State<HomePage> createState() => _HomePageState();
 }
 
-class _HomePageState extends State<HomePage> {
+class _HomePageState extends State<HomePage>
+    with SingleTickerProviderStateMixin {
+  late TabController _tabController;
+
+  @override
+  void initState() {
+    super.initState();
+    _tabController = TabController(length: 3, vsync: this);
+    _tabController.addListener(_handleTabSelection);
+  }
+
+  @override
+  void dispose() {
+    _tabController.dispose();
+    super.dispose();
+  }
+
+  void _handleTabSelection() {
+    setState(() {});
+  }
+
   @override
   Widget build(BuildContext context) {
-    return DefaultTabController(
-      length: 3,
-      child: Scaffold(
+    return Scaffold(
+      backgroundColor: Theme.of(context).colorScheme.surface,
+      drawer: const MyDrawer(),
+      appBar: AppBar(
+        centerTitle: true,
+        title: Text(_getAppBarTitle()),
         backgroundColor: Theme.of(context).colorScheme.tertiary,
-        drawer: const MyDrawer(),
-        appBar: AppBar(
-          bottom: TabBar(
-            labelColor: Theme.of(context).colorScheme.primary,
-            tabs: [
-              Tab(icon: Icon(Icons.home), text: 'Home'),
-              Tab(icon: Icon(Icons.menu_book), text: 'Courses'),
-              Tab(icon: Icon(Icons.quiz), text: 'Quizzes'),
-            ],
+      ),
+      body: Column(
+        children: [
+          Expanded(
+            child: TabBarView(
+              controller: _tabController,
+              children: [
+                HomeContainer(
+                    nickname: widget.nickname), // Use HomeContainer here
+                const Center(child: Text('Courses Content')),
+                const QuizzesContainer()
+              ],
+            ),
           ),
-          centerTitle: true,
-          title: const Text('Home'),
-          backgroundColor: Colors.transparent,
-        ),
-        body: const TabBarView(
-          children: [
-            Center(child: Text('Home Content')),
-            Center(child: Text('Courses Content')),
-            Center(child: Text('Quizzes Content')),
-          ],
-        ),
+          Divider(height: 1.0, color: Theme.of(context).dividerColor),
+          Container(
+            color: Theme.of(context).colorScheme.surface,
+            child: TabBar(
+              controller: _tabController,
+              labelColor: Theme.of(context).colorScheme.primary,
+              indicatorColor: Theme.of(context).colorScheme.primary,
+              tabs: const [
+                Tab(icon: Icon(Icons.home), text: 'Home'),
+                Tab(icon: Icon(Icons.menu_book), text: 'Courses'),
+                Tab(icon: Icon(Icons.quiz), text: 'Quizzes'),
+              ],
+            ),
+          ),
+        ],
       ),
     );
+  }
+
+  String _getAppBarTitle() {
+    switch (_tabController.index) {
+      case 0:
+        return 'Home';
+      case 1:
+        return 'Courses';
+      case 2:
+        return 'Quizzes';
+      default:
+        return 'Home';
+    }
   }
 }

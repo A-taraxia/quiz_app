@@ -24,9 +24,9 @@ class MyTextField extends StatelessWidget {
                     BorderSide(color: Theme.of(context).colorScheme.tertiary)),
             focusedBorder: OutlineInputBorder(
                 borderSide:
-                    BorderSide(color: Theme.of(context).colorScheme.primary)),
+                    BorderSide(color: Theme.of(context).colorScheme.inversePrimary)),
             hintText: hintText,
-            hintStyle: TextStyle(color: Theme.of(context).colorScheme.primary)),
+            hintStyle: TextStyle(color: Theme.of(context).colorScheme.inversePrimary)),
       ),
     );
   }

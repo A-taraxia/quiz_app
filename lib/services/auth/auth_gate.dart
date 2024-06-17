@@ -1,6 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:quiz_app/pages/home_page.dart';
+import 'package:quiz_app/services/auth/auth_services.dart';
 import 'package:quiz_app/services/auth/login_or_register.dart';
 
 class AuthGate extends StatelessWidget {
@@ -9,13 +10,40 @@ class AuthGate extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return StreamBuilder(
-        stream: FirebaseAuth.instance.authStateChanges(),
-        builder: (context, snapshot) {
-          if (snapshot.hasData) {
-            return const HomePage();
-          } else {
-            return const LoginOrRegister();
+      stream: FirebaseAuth.instance.authStateChanges(),
+      builder: (context, snapshot) {
+        if (snapshot.connectionState == ConnectionState.waiting) {
+          // Loading indicator or splash screen while checking authentication state
+          return const CircularProgressIndicator(); // Replace this with your loading widget
+        }
+        if (snapshot.hasData) {
+          // User is signed in
+          User? user = snapshot.data;
+          if (user != null) {
+            // Fetch nickname from Firestore
+            return FutureBuilder(
+              future: AuthServices().getNicknameFromFirestore(user.uid),
+              builder: (context, nicknameSnapshot) {
+                if (nicknameSnapshot.connectionState ==
+                    ConnectionState.waiting) {
+                  // Loading indicator while fetching nickname
+                  return const CircularProgressIndicator(); // Replace this with your loading widget
+                }
+                if (nicknameSnapshot.hasData) {
+                  // Navigate to HomePage with the fetched nickname
+                  return HomePage(nickname: nicknameSnapshot.data as String);
+                } else {
+                  // Handle case where nickname is not found
+                  return const Text(
+                      'Nickname not found'); // Example error message
+                }
+              },
+            );
           }
-        });
+        }
+        // User is not signed in, navigate to login/register page
+        return const LoginOrRegister();
+      },
+    );
   }
 }
