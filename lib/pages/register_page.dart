@@ -18,9 +18,8 @@ class _RegisterPageState extends State<RegisterPage> {
   final TextEditingController emailController = TextEditingController();
   final TextEditingController passwordController = TextEditingController();
   final TextEditingController confirmpasswordController =
-  TextEditingController();
-  final TextEditingController nicknameController =
-  TextEditingController(); // Add this line
+      TextEditingController();
+  final TextEditingController nicknameController = TextEditingController();
 
   // Create an instance of AuthServices
   final AuthServices _authServices = AuthServices();
@@ -29,7 +28,7 @@ class _RegisterPageState extends State<RegisterPage> {
     if (passwordController.text == confirmpasswordController.text) {
       try {
         UserCredential userCredential =
-        await _authServices.signUpWithEmailPassword(
+            await _authServices.signUpWithEmailPassword(
           emailController.text,
           passwordController.text,
         );
@@ -65,7 +64,6 @@ class _RegisterPageState extends State<RegisterPage> {
     }
   }
 
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -85,7 +83,7 @@ class _RegisterPageState extends State<RegisterPage> {
                 "Online Courses",
                 style: TextStyle(
                   fontSize: 16,
-                  color: Theme.of(context).colorScheme.inversePrimary,
+                  color: Theme.of(context).colorScheme.onSurface,
                 ),
               ),
               const SizedBox(height: 25),
@@ -108,9 +106,9 @@ class _RegisterPageState extends State<RegisterPage> {
               ),
               const SizedBox(height: 10),
               MyTextField(
-                controller: nicknameController, // Add this line
-                hintText: "Enter your Nickname here", // Add this line
-                obscureText: false, // Add this line
+                controller: nicknameController,
+                hintText: "Enter your Nickname here",
+                obscureText: false,
               ),
               const SizedBox(height: 10),
               MyButton(
@@ -123,7 +121,7 @@ class _RegisterPageState extends State<RegisterPage> {
                   Text(
                     "Already a member?",
                     style: TextStyle(
-                      color: Theme.of(context).colorScheme.inversePrimary,
+                      color: Theme.of(context).colorScheme.onSurface,
                     ),
                   ),
                   const SizedBox(width: 4),
@@ -132,7 +130,7 @@ class _RegisterPageState extends State<RegisterPage> {
                     child: Text(
                       "Sign In now",
                       style: TextStyle(
-                        color: Theme.of(context).colorScheme.inversePrimary,
+                        color: Theme.of(context).colorScheme.secondary,
                         fontWeight: FontWeight.bold,
                       ),
                     ),

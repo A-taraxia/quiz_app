@@ -23,7 +23,7 @@ class _LoginPageState extends State<LoginPage> {
   void login() async {
     try {
       UserCredential userCredential =
-      await _authServices.signInWithEmailPassword(
+          await _authServices.signInWithEmailPassword(
         emailController.text,
         passwordController.text,
       );
@@ -52,7 +52,6 @@ class _LoginPageState extends State<LoginPage> {
     }
   }
 
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -71,7 +70,7 @@ class _LoginPageState extends State<LoginPage> {
               "Online Courses",
               style: TextStyle(
                 fontSize: 16,
-                color: Theme.of(context).colorScheme.inversePrimary,
+                color: Theme.of(context).colorScheme.onSurface,
               ),
             ),
             const SizedBox(height: 25),
@@ -96,7 +95,8 @@ class _LoginPageState extends State<LoginPage> {
                 Text(
                   "Not a member?",
                   style: TextStyle(
-                      color: Theme.of(context).colorScheme.inversePrimary),
+                    color: Theme.of(context).colorScheme.onSurface,
+                  ),
                 ),
                 const SizedBox(width: 4),
                 GestureDetector(
@@ -104,8 +104,9 @@ class _LoginPageState extends State<LoginPage> {
                   child: Text(
                     "Register now",
                     style: TextStyle(
-                        color: Theme.of(context).colorScheme.inversePrimary,
-                        fontWeight: FontWeight.bold),
+                      color: Theme.of(context).colorScheme.secondary,
+                      fontWeight: FontWeight.bold,
+                    ),
                   ),
                 ),
               ],

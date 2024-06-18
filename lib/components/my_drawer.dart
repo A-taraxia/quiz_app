@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:quiz_app/components/my_drawer_tile.dart';
 import 'package:quiz_app/pages/login_page.dart';
+import 'package:quiz_app/pages/register_page.dart'; // Import the RegisterPage
 import 'package:quiz_app/pages/settings_page.dart';
 import 'package:quiz_app/services/auth/auth_services.dart';
-import 'package:quiz_app/pages/register_page.dart'; // Import the RegisterPage
 
 class MyDrawer extends StatelessWidget {
   const MyDrawer({super.key});
@@ -19,7 +19,7 @@ class MyDrawer extends StatelessWidget {
             child: Icon(
               Icons.lock_open_rounded,
               size: 50,
-              color: Theme.of(context).colorScheme.inversePrimary,
+              color: Theme.of(context).colorScheme.onSurface,
             ),
           ),
           Padding(
@@ -72,7 +72,7 @@ class MyDrawer extends StatelessWidget {
                       },
                     ),
                   ),
-                      (Route<dynamic> route) => false,
+                  (Route<dynamic> route) => false,
                 );
               } catch (e) {
                 ScaffoldMessenger.of(context).showSnackBar(

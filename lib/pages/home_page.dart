@@ -42,7 +42,7 @@ class _HomePageState extends State<HomePage>
       appBar: AppBar(
         centerTitle: true,
         title: Text(_getAppBarTitle()),
-        backgroundColor: Theme.of(context).colorScheme.tertiary,
+        backgroundColor: Theme.of(context).colorScheme.primary,
       ),
       body: Column(
         children: [
@@ -62,8 +62,8 @@ class _HomePageState extends State<HomePage>
             color: Theme.of(context).colorScheme.surface,
             child: TabBar(
               controller: _tabController,
-              labelColor: Theme.of(context).colorScheme.primary,
-              indicatorColor: Theme.of(context).colorScheme.primary,
+              labelColor: Theme.of(context).colorScheme.secondary,
+              indicatorColor: Theme.of(context).colorScheme.secondary,
               tabs: const [
                 Tab(icon: Icon(Icons.home), text: 'Home'),
                 Tab(icon: Icon(Icons.menu_book), text: 'Courses'),
