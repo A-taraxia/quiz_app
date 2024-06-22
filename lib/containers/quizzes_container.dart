@@ -36,6 +36,7 @@ class _QuizzesContainerState extends State<QuizzesContainer> {
           builder: (ctx) => ResultBox(
                 result: score,
                 questionLength: _questions.length,
+                startOver: startOver,
               ));
     } else {
       if (isPressed) {
@@ -62,11 +63,20 @@ class _QuizzesContainerState extends State<QuizzesContainer> {
     });
   }
 
+  void startOver() {
+    setState(() {
+      index = 0;
+      score = 0;
+      isPressed = false;
+    });
+    Navigator.pop(context);
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Quiz App'),
+        title: const Text('Quiz App'),
         backgroundColor: Colors.transparent,
         shadowColor: Colors.transparent,
         actions: [

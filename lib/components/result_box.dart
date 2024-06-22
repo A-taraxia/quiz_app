@@ -4,9 +4,13 @@ import 'package:flutter/material.dart';
 
 class ResultBox extends StatelessWidget {
   const ResultBox(
-      {super.key, required this.result, required this.questionLength});
+      {super.key,
+      required this.result,
+      required this.questionLength,
+      required this.startOver});
   final int result;
   final int questionLength;
+  final VoidCallback startOver;
 
   @override
   Widget build(BuildContext context) {
@@ -49,8 +53,15 @@ class ResultBox extends StatelessWidget {
             ),
             const SizedBox(height: 25),
             GestureDetector(
-              onTap: () {},
-              child: const Text('Start Over'),
+              onTap: startOver,
+              child: Text(
+                'Start Over',
+                style: TextStyle(
+                    color: Theme.of(context).colorScheme.secondary,
+                    fontSize: 20,
+                    fontWeight: FontWeight.w500,
+                    letterSpacing: 1),
+              ),
             )
           ],
         ),
