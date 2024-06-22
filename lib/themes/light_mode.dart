@@ -18,10 +18,13 @@ final ThemeData lightMode = ThemeData(
   cardColor: Colors.grey[50],
   iconTheme: IconThemeData(color: Colors.teal),
   textTheme: TextTheme(
-    bodyLarge: TextStyle(color: Colors.grey[800]),
-    bodyMedium: TextStyle(color: Colors.grey[700], fontSize: 20),
+    bodyLarge: TextStyle(
+        color: Colors.grey[800], fontSize: 20), // Consistent font size
+    bodyMedium: TextStyle(
+        color: Colors.grey[800], fontSize: 20), // Consistent font size
     headlineLarge: TextStyle(color: Colors.grey[900], fontSize: 30),
-    headlineMedium: TextStyle(color: Colors.grey[800]),
+    headlineMedium:
+        TextStyle(color: Colors.grey[800], fontSize: 24), // Added fontSize
   ),
   buttonTheme: ButtonThemeData(
     buttonColor: Colors.teal,

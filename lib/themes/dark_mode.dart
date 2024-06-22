@@ -12,15 +12,19 @@ final ThemeData darkMode = ThemeData(
     onSecondary: Colors.white,
     onSurface: Colors.grey[300]!,
     onBackground: Colors.grey[400]!,
+    onError: Colors.red[600]!,
   ),
   scaffoldBackgroundColor: Colors.grey[900],
   cardColor: Colors.grey[850],
   iconTheme: IconThemeData(color: Colors.teal),
   textTheme: TextTheme(
-    bodyLarge: TextStyle(color: Colors.grey[300]),
-    bodyMedium: TextStyle(color: Colors.grey[400]),
-    headlineLarge: TextStyle(color: Colors.grey[100]),
-    headlineMedium: TextStyle(color: Colors.grey[200]),
+    bodyLarge: TextStyle(
+        color: Colors.grey[300], fontSize: 20), // Consistent font size
+    bodyMedium: TextStyle(
+        color: Colors.grey[300], fontSize: 20), // Consistent font size
+    headlineLarge: TextStyle(color: Colors.grey[300], fontSize: 30),
+    headlineMedium:
+        TextStyle(color: Colors.grey[300], fontSize: 24), // Added fontSize
   ),
   buttonTheme: ButtonThemeData(
     buttonColor: Colors.teal,
