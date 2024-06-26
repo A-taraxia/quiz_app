@@ -103,7 +103,7 @@ class _CoursesContainerState extends State<CoursesContainer> {
       child: ListTile(
         title: Text(
           course['title']!,
-          style: Theme.of(context).textTheme.bodyLarge?.copyWith(color: Colors.green),
+          style: Theme.of(context).textTheme.bodyLarge?.copyWith(color: Theme.of(context).colorScheme.secondary),
         ),
         subtitle: Text(
           course['description']!,
