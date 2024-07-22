@@ -11,44 +11,53 @@ class _CoursesContainerState extends State<CoursesContainer> {
   final List<Map<String, String>> _courses = [
     {
       'title': 'Course For Python 1',
-      'description': 'A detailed introduction to Python programming for beginners.',
-      'text': 'This course covers the basics of Python programming, including syntax, variables, and data types.',
+      'description':
+          'A detailed introduction to Python programming for beginners.',
+      'text':
+          'This course covers the basics of Python programming, including syntax, variables, and data types.',
       'level': 'Novice'
     },
     {
       'title': 'Course For Python 2',
-      'description': 'A continuation of the introduction to Python programming.',
-      'text': 'This course goes deeper into Python basics and introduces new concepts.',
+      'description':
+          'A continuation of the introduction to Python programming.',
+      'text':
+          'This course goes deeper into Python basics and introduces new concepts.',
       'level': 'Novice'
     },
     {
       'title': 'Course 1',
       'description': 'A description of what needs to be done for Course 2',
-      'text': 'This course covers the intermediate topics of the subject, including practical exercises and examples.',
+      'text':
+          'This course covers the intermediate topics of the subject, including practical exercises and examples.',
       'level': 'Advanced Beginner'
     },
     {
       'title': 'Course 2',
       'description': 'Another intermediate course for advanced beginners.',
-      'text': 'This course includes more exercises and examples to build on intermediate topics.',
+      'text':
+          'This course includes more exercises and examples to build on intermediate topics.',
       'level': 'Advanced Beginner'
     },
     {
       'title': 'Course 1',
       'description': 'A description of what needs to be done for Course 3',
-      'text': 'This course focuses on advanced techniques and applications in the field.',
+      'text':
+          'This course focuses on advanced techniques and applications in the field.',
       'level': 'Competence'
     },
     {
       'title': 'Course 1',
       'description': 'A description of what needs to be done for Course 4',
-      'text': 'This course provides a comprehensive review of all topics covered in previous courses.',
+      'text':
+          'This course provides a comprehensive review of all topics covered in previous courses.',
       'level': 'Proficient'
     },
     {
       'title': 'Course 1',
       'description': 'A description of what needs to be done for Course 5',
-      'text': 'This course provides a comprehensive review of all topics covered in previous courses.',
+      'text':
+          'This course provides a comprehensive review of all topics covered in previous courses.',
       'level': 'Expert'
     },
   ];
@@ -68,7 +77,8 @@ class _CoursesContainerState extends State<CoursesContainer> {
       body: ListView.builder(
         itemCount: _courses.length,
         itemBuilder: (context, index) {
-          if (index == 0 || _courses[index]['level'] != _courses[index - 1]['level']) {
+          if (index == 0 ||
+              _courses[index]['level'] != _courses[index - 1]['level']) {
             return Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
@@ -90,20 +100,24 @@ class _CoursesContainerState extends State<CoursesContainer> {
       child: Text(
         level,
         style: Theme.of(context).textTheme.titleLarge?.copyWith(
-          fontWeight: FontWeight.bold,
-        ),
+              fontWeight: FontWeight.bold,
+            ),
       ),
     );
   }
 
-  Widget _buildCourseCard(BuildContext context, Map<String, String> course, int index) {
+  Widget _buildCourseCard(
+      BuildContext context, Map<String, String> course, int index) {
     return Card(
       color: Theme.of(context).colorScheme.surface,
       margin: const EdgeInsets.symmetric(vertical: 8.0, horizontal: 16.0),
       child: ListTile(
         title: Text(
           course['title']!,
-          style: Theme.of(context).textTheme.bodyLarge?.copyWith(color: Theme.of(context).colorScheme.secondary),
+          style: Theme.of(context)
+              .textTheme
+              .bodyLarge
+              ?.copyWith(color: Theme.of(context).colorScheme.secondary),
         ),
         subtitle: Text(
           course['description']!,
@@ -113,7 +127,7 @@ class _CoursesContainerState extends State<CoursesContainer> {
           ignoring: true,
           child: Checkbox(
             value: _isSelected[index],
-            onChanged: null, // Set to null to make the checkbox non-clickable
+            onChanged: null,
           ),
         ),
         onTap: () {
@@ -152,7 +166,7 @@ class DetailScreen extends StatelessWidget {
             color: Colors.green,
           ),
         ),
-        centerTitle: true,  // Center the title
+        centerTitle: true, // Center the title
       ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),

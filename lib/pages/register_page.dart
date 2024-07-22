@@ -76,7 +76,7 @@ class _RegisterPageState extends State<RegisterPage> {
               Icon(
                 Icons.lock,
                 size: 72,
-                color: Theme.of(context).colorScheme.primary,
+                color: Theme.of(context).colorScheme.secondary,
               ),
               const SizedBox(height: 25),
               Text(

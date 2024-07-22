@@ -3,23 +3,27 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:quiz_app/firebase_options.dart';
 import 'package:quiz_app/models/db_models.dart';
-import 'package:quiz_app/models/question_models.dart';
 import 'package:quiz_app/pages/home_page.dart';
 import 'package:quiz_app/themes/theme_provider.dart';
 
+import 'data/level_data.dart';
+import 'models/level_model.dart';
+
 void main() async {
-  var questionsDB = DBconnect();
-  questionsDB.addQuestion(Question(
-      id: '20',
-      title: 'Inside which HTML element do we put the JavaScript?',
-      options: {
-        '<scripting>': false,
-        '<script>': true,
-        '<javascript>': false,
-        '<js>': false
-      }));
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
+
+  var levelsDB = DBconnect();
+  List<Level> levels = getLevels();
+
+  for (var level in levels) {
+    try {
+      await levelsDB.addLevel(level);
+    } catch (e) {
+      print('Error adding level: $e');
+    }
+  }
+
   runApp(
     MultiProvider(
       providers: [
@@ -33,7 +37,6 @@ void main() async {
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
 
-  // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -41,7 +44,6 @@ class MyApp extends StatelessWidget {
       home: const HomePage(
         nickname: 'Athina',
       ),
-      //home: const AuthGate(),
       theme: Provider.of<ThemeProvider>(context).themeData,
     );
   }

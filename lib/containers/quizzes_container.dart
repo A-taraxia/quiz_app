@@ -15,11 +15,9 @@ class QuizzesContainer extends StatefulWidget {
 class _QuizzesContainerState extends State<QuizzesContainer> {
   final List<Question> _questions = [
     Question(
-        id: '10',
         title: '2 + 2 = ?',
         options: {'5': false, '30': false, '4': true, '10': false}),
     Question(
-        id: '11',
         title: '2 + 5 = ?',
         options: {'7': true, '30': false, '4': false, '10': false}),
   ];
