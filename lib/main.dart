@@ -2,7 +2,6 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:quiz_app/firebase_options.dart';
-import 'package:quiz_app/pages/home_page.dart';
 import 'package:quiz_app/services/auth/auth_gate.dart';
 import 'package:quiz_app/themes/theme_provider.dart';
 

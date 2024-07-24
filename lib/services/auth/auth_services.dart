@@ -12,7 +12,7 @@ class AuthServices {
   Future<String?> getNicknameFromFirestore(String uid) async {
     try {
       DocumentSnapshot<Map<String, dynamic>> userSnapshot =
-      await _firestore.collection('users').doc(uid).get();
+          await _firestore.collection('users').doc(uid).get();
       if (userSnapshot.exists) {
         return userSnapshot.data()?['nickname'];
       } else {
@@ -56,6 +56,21 @@ class AuthServices {
     await _firestore.collection('users').doc(uid).set({
       'uid': uid,
       'nickname': nickname,
+      'level': 'beginner',
+      'courses': {
+        '1Beginner': {'0': false, '1': false},
+        '2Intermediate': {'0': false, '1': false},
+        '3Advanced': {'0': false, '1': false},
+        '4Expert': {'0': false, '1': false},
+        '5Master': {'0': false, '1': false},
+      },
+      'quizzes': {
+        '1Beginner': 0,
+        '2Intermediate': 0,
+        '3Advanced': 0,
+        '4Expert': 0,
+        '5Master': 0,
+      },
     });
   }
 

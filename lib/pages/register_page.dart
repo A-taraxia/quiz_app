@@ -2,7 +2,6 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:quiz_app/components/my_button.dart';
 import 'package:quiz_app/components/my_textfield.dart';
-import 'package:quiz_app/pages/home_page.dart';
 import 'package:quiz_app/pages/starter_page.dart';
 import 'package:quiz_app/services/auth/auth_services.dart';
 
@@ -29,30 +28,28 @@ class _RegisterPageState extends State<RegisterPage> {
     if (passwordController.text == confirmpasswordController.text) {
       try {
         // Register the user
-        UserCredential userCredential = await _authServices.signUpWithEmailPassword(
+        UserCredential userCredential =
+            await _authServices.signUpWithEmailPassword(
           emailController.text,
           passwordController.text,
         );
 
-        // Get UID
         final uid = userCredential.user?.uid;
 
         if (uid != null) {
-          // Save user data to Firestore
           await _authServices.saveUserToFirestore(uid, nicknameController.text);
 
-          // Fetch nickname
           String? nickname = await _authServices.getNicknameFromFirestore(uid);
 
           if (mounted) {
-            print('Nickname fetched: $nickname'); // Debug
             if (nickname != null) {
               // Navigate to StarterPage
-              Navigator.push(
+              Navigator.pushAndRemoveUntil(
                 context,
                 MaterialPageRoute(
                   builder: (context) => StarterPage(nickname: nickname),
                 ),
+                (route) => false, // Remove all previous routes
               );
             } else {
               // Handle case where nickname is not found
@@ -86,8 +83,6 @@ class _RegisterPageState extends State<RegisterPage> {
       }
     }
   }
-
-
 
   @override
   Widget build(BuildContext context) {

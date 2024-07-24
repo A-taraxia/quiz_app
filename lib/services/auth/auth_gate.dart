@@ -9,33 +9,34 @@ class AuthGate extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return StreamBuilder(
+    return StreamBuilder<User?>(
       stream: FirebaseAuth.instance.authStateChanges(),
       builder: (context, snapshot) {
         if (snapshot.connectionState == ConnectionState.waiting) {
-          // Loading indicator or splash screen while checking authentication state
-          return const CircularProgressIndicator(); // Replace this with your loading widget
+          return const Center(child: CircularProgressIndicator());
         }
+
         if (snapshot.hasData) {
-          // User is signed in
           User? user = snapshot.data;
           if (user != null) {
-            // Fetch nickname from Firestore
-            return FutureBuilder(
+            return FutureBuilder<String?>(
               future: AuthServices().getNicknameFromFirestore(user.uid),
               builder: (context, nicknameSnapshot) {
                 if (nicknameSnapshot.connectionState ==
                     ConnectionState.waiting) {
                   // Loading indicator while fetching nickname
-                  return const CircularProgressIndicator(); // Replace this with your loading widget
+                  return const Center(child: CircularProgressIndicator());
                 }
-                if (nicknameSnapshot.hasData) {
+                if (nicknameSnapshot.hasError) {
+                  // Handle error while fetching nickname
+                  return const Center(child: Text('Error fetching nickname'));
+                }
+                if (nicknameSnapshot.hasData && nicknameSnapshot.data != null) {
                   // Navigate to HomePage with the fetched nickname
-                  return HomePage(nickname: nicknameSnapshot.data as String);
+                  return HomePage(nickname: nicknameSnapshot.data!);
                 } else {
                   // Handle case where nickname is not found
-                  return const Text(
-                      'Nickname not found'); // Example error message
+                  return const LoginOrRegister();
                 }
               },
             );
