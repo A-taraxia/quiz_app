@@ -1,7 +1,9 @@
 import 'dart:convert';
 
 import 'package:http/http.dart' as http;
+import 'package:quiz_app/models/course_model.dart';
 import 'package:quiz_app/models/level_model.dart';
+import 'package:quiz_app/models/question_models.dart';
 
 class DBconnect {
   final url = Uri.parse(
@@ -16,7 +18,8 @@ class DBconnect {
         .replaceAll('\$', '%24')
         .replaceAll('[', '%5B')
         .replaceAll(']', '%5D')
-        .replaceAll('#', '%23');
+        .replaceAll('#', '%23')
+        .replaceAll('/', '%2F');
   }
 
   Future<void> addLevel(Level level) async {
@@ -49,5 +52,76 @@ class DBconnect {
     } else {
       print('Successfully added level: ${level.title}');
     }
+  }
+
+  Future<List<Level>> fetchLevels() async {
+    final response = await http.get(url);
+
+    if (response.statusCode != 200) {
+      throw Exception('Failed to load levels');
+    }
+
+    final Map<String, dynamic>? data = json.decode(response.body);
+    List<Level> levels = [];
+
+    if (data != null) {
+      data.forEach((key, value) {
+        final level = Level(
+          title: value['title'],
+          questions: (value['questions'] as List<dynamic>).map((q) {
+            return Question(
+              title: q['title'],
+              options: Map<String, bool>.from(q['options']),
+            );
+          }).toList(),
+          courses: (value['courses'] as List<dynamic>).map((c) {
+            return Course(
+              title: c['title'],
+              description: c['description'],
+              content: c['content'],
+            );
+          }).toList(),
+        );
+
+        levels.add(level);
+      });
+    }
+
+    return levels;
+  }
+
+  Future<Level> fetchLevel(String levelKey) async {
+    final levelUrl = Uri.parse(
+        'https://quizapp-3b15c-default-rtdb.firebaseio.com/levels/$levelKey.json');
+    final response = await http.get(levelUrl);
+
+    if (response.statusCode != 200) {
+      throw Exception('Failed to load level');
+    }
+
+    final Map<String, dynamic>? data = json.decode(response.body);
+
+    if (data == null) {
+      throw Exception('Level data is null');
+    }
+
+    final level = Level(
+      title: data['title'],
+      questions: (data['questions'] as List<dynamic>).map((q) {
+        return Question(
+          title: q['title'],
+          options: Map<String, bool>.from(q['options']),
+        );
+      }).toList(),
+      courses: (data['courses'] as List<dynamic>).map((c) {
+        return Course(
+          title: c['title'],
+          description: c['description'],
+          content: c['content'],
+        );
+      }).toList(),
+    );
+
+    return level;
   }
 }

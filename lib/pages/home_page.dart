@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:quiz_app/components/my_drawer.dart';
 import 'package:quiz_app/containers/courses_container.dart';
-import 'package:quiz_app/containers/quizzes_container.dart';
 import 'package:quiz_app/containers/home_container.dart'; // Import the HomeContainer
+import 'package:quiz_app/containers/quiz_menu.dart';
 
 class HomePage extends StatefulWidget {
   final String nickname;
@@ -50,9 +50,10 @@ class _HomePageState extends State<HomePage>
             child: TabBarView(
               controller: _tabController,
               children: [
-                HomeContainer(nickname: widget.nickname), // Use HomeContainer here
+                HomeContainer(
+                    nickname: widget.nickname), // Use HomeContainer here
                 const CoursesContainer(),
-                const QuizzesContainer()
+                QuizMenu(),
               ],
             ),
           ),
