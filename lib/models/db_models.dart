@@ -8,6 +8,8 @@ import 'package:quiz_app/models/question_models.dart';
 class DBconnect {
   final url = Uri.parse(
       'https://quizapp-3b15c-default-rtdb.firebaseio.com/levels.json');
+  final userProgressUrl = Uri.parse(
+      'https://quizapp-3b15c-default-rtdb.firebaseio.com/users/userID/completedCourses.json');
 
   // Function to sanitize keys by replacing special characters
   String sanitizeKey(String key) {
@@ -110,17 +112,16 @@ class DBconnect {
     final levelUrl = Uri.parse(
         'https://quizapp-3b15c-default-rtdb.firebaseio.com/levels/$sanitizedKey.json');
 
-    print('Fetching level data from: $levelUrl'); // Debugging URL
+    print('Fetching level data from: $levelUrl');
     final response = await http.get(levelUrl);
 
     if (response.statusCode != 200) {
-      print(
-          'Failed to load level: ${response.statusCode}'); // Debugging response
+      print('Failed to load level: ${response.statusCode}');
       throw Exception('Failed to load level');
     }
 
     final Map<String, dynamic>? data = json.decode(response.body);
-    print('Fetched level data: $data'); // Debugging fetched data
+    print('Fetched level data: $data');
 
     if (data == null) {
       throw Exception('Level data is null');

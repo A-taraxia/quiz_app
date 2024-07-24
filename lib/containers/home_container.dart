@@ -27,25 +27,29 @@ class HomeContainer extends StatelessWidget {
           ),
         ),
         const SizedBox(height: 20),
+        Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: Align(
+            alignment: Alignment.centerLeft,
+            child: ElevatedButton(
+              style: ElevatedButton.styleFrom(
+                backgroundColor: Colors.deepPurple,
+              ),
+              onPressed: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => StarterPage(nickname: nickname),
+                  ),
+                );
+              },
+              child: const Text('Starter Quiz'),
+            ),
+          ),
+        ),
+        const SizedBox(height: 25),
         Center(
           child: ProgressBar(),
-        ),
-        const SizedBox(height: 20),
-        Center(
-          child: ElevatedButton(
-            style: ElevatedButton.styleFrom(
-              backgroundColor: Colors.deepPurple,
-            ),
-            onPressed: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(
-                  builder: (context) => StarterPage(nickname: nickname),
-                ),
-              );
-            },
-            child: const Text('Starter Quiz'),
-          ),
         ),
       ],
     );

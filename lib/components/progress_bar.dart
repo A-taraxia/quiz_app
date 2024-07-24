@@ -1,10 +1,28 @@
 import 'package:flutter/material.dart';
 import 'package:percent_indicator/circular_percent_indicator.dart';
+import 'package:quiz_app/services/auth/auth_services.dart';
 
-class ProgressBar extends StatelessWidget {
-  final double percent;
+class ProgressBar extends StatefulWidget {
+  @override
+  _ProgressBarState createState() => _ProgressBarState();
+}
 
-  const ProgressBar({super.key, this.percent = 0.0});
+class _ProgressBarState extends State<ProgressBar> {
+  double percent = 0.0;
+  final AuthServices _authServices = AuthServices();
+
+  @override
+  void initState() {
+    super.initState();
+    _fetchProgress();
+  }
+
+  Future<void> _fetchProgress() async {
+    int totalScore = await _authServices.getTotalQuizScore();
+    setState(() {
+      percent = totalScore / 25;
+    });
+  }
 
   @override
   Widget build(BuildContext context) {

@@ -5,6 +5,7 @@ import 'package:quiz_app/components/question_widget.dart';
 import 'package:quiz_app/components/result_box.dart';
 import 'package:quiz_app/models/db_models.dart';
 import 'package:quiz_app/models/question_models.dart';
+import 'package:quiz_app/services/auth/auth_services.dart';
 
 class QuizzesContainer extends StatefulWidget {
   final String levelKey;
@@ -19,11 +20,15 @@ class _QuizzesContainerState extends State<QuizzesContainer> {
   late Future<List<Question>> _questionsFuture;
   List<Question> _questions = [];
   final DBconnect _dbConnect = DBconnect();
+  final AuthServices _authServices = AuthServices();
+
+  String? nickname;
 
   @override
   void initState() {
     super.initState();
     _questionsFuture = _fetchQuestionsForLevel(widget.levelKey);
+    _fetchNickname();
   }
 
   Future<List<Question>> _fetchQuestionsForLevel(String levelKey) async {
@@ -31,20 +36,32 @@ class _QuizzesContainerState extends State<QuizzesContainer> {
     return level.questions;
   }
 
+  Future<void> _fetchNickname() async {
+    nickname = await _authServices.getNickname();
+    setState(() {});
+  }
+
   int index = 0;
   bool isPressed = false;
   int score = 0;
 
-  void nextQuestion() {
+  void nextQuestion() async {
     if (index == _questions.length - 1) {
-      showDialog(
-          context: context,
-          barrierDismissible: false,
-          builder: (ctx) => ResultBox(
-                result: score,
-                questionLength: _questions.length,
-                startOver: startOver, nickname: AutofillHints.nickname,
-              ));
+      try {
+        // Save the quiz score to Firestore
+        await _authServices.saveQuizScore(widget.levelKey, score);
+        showDialog(
+            context: context,
+            barrierDismissible: false,
+            builder: (ctx) => ResultBox(
+                  result: score,
+                  questionLength: _questions.length,
+                  startOver: startOver,
+                  nickname: nickname ?? 'No nickname',
+                ));
+      } catch (e) {
+        print('Error saving quiz score: $e');
+      }
     } else {
       if (isPressed) {
         setState(() {
@@ -135,7 +152,7 @@ class _QuizzesContainerState extends State<QuizzesContainer> {
           const SizedBox(height: 16),
           ListView.builder(
             shrinkWrap: true,
-            physics: NeverScrollableScrollPhysics(),
+            physics: const NeverScrollableScrollPhysics(),
             itemCount: _questions[index].options.length,
             itemBuilder: (context, i) {
               final option = _questions[index].options.keys.toList()[i];

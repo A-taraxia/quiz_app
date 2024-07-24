@@ -1,10 +1,11 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:flutter/material.dart';
-import 'package:http/http.dart' as http;
 import 'dart:convert';
 
-import '../components/result_box.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/material.dart';
+import 'package:http/http.dart' as http;
+import 'package:quiz_app/services/auth/auth_services.dart';
+
+import '../components/result_box.dart';
 
 class StarterPage extends StatefulWidget {
   final String nickname;
@@ -16,7 +17,9 @@ class StarterPage extends StatefulWidget {
 }
 
 class _StarterPageState extends State<StarterPage> {
-  final String _databaseUrl = 'https://quizapp-3b15c-default-rtdb.firebaseio.com/Starter Quiz.json';
+  final String _databaseUrl =
+      'https://quizapp-3b15c-default-rtdb.firebaseio.com/Starter Quiz.json';
+  final AuthServices _authServices = AuthServices();
   Map<String, dynamic>? _quizData;
   int _currentIndex = 0;
   int _score = 0;
@@ -64,6 +67,7 @@ class _StarterPageState extends State<StarterPage> {
     final questionsLength = (_quizData?['questions'] as List<dynamic>).length;
 
     if (_currentIndex == questionsLength - 1) {
+      _updateUserLevel(); // Update user's level based on their score
       // Show result dialog if it's the last question
       showDialog(
         context: context,
@@ -96,6 +100,26 @@ class _StarterPageState extends State<StarterPage> {
     }
   }
 
+  void _updateUserLevel() async {
+    String level;
+    if (_score <= 2) {
+      level = 'beginner';
+    } else if (_score <= 4) {
+      level = 'intermediate';
+    } else if (_score <= 6) {
+      level = 'advanced';
+    } else if (_score <= 8) {
+      level = 'expert';
+    } else {
+      level = 'master';
+    }
+
+    User? currentUser = _authServices.getCurrentUser();
+    if (currentUser != null) {
+      await _authServices.updateUserLevel(currentUser.uid, level);
+    }
+  }
+
   void _startOver() {
     setState(() {
       _currentIndex = 0;
@@ -120,7 +144,8 @@ class _StarterPageState extends State<StarterPage> {
     List<dynamic> questions = _quizData?['questions'] ?? [];
     var currentQuestion = questions[_currentIndex];
     var questionTitle = currentQuestion['title'];
-    var options = (currentQuestion['options'] as Map<String, dynamic>).entries.toList();
+    var options =
+        (currentQuestion['options'] as Map<String, dynamic>).entries.toList();
 
     return Scaffold(
       appBar: AppBar(
@@ -166,7 +191,8 @@ class _StarterPageState extends State<StarterPage> {
                       color = Colors.grey[200]!; // Other answers
                     }
                   } else {
-                    color = Colors.grey[200]!; // Default color for unselected options
+                    color = Colors
+                        .grey[200]!; // Default color for unselected options
                   }
 
                   return GestureDetector(
@@ -192,11 +218,16 @@ class _StarterPageState extends State<StarterPage> {
               child: ElevatedButton(
                 onPressed: _nextQuestion,
                 style: ElevatedButton.styleFrom(
-                  backgroundColor: Colors.purple, // Set the background color to purple
+                  backgroundColor:
+                      Colors.purple, // Set the background color to purple
                 ),
                 child: Text(
-                  _currentIndex < (questions.length - 1) ? 'Next Question' : 'Finish Quiz',
-                  style: TextStyle(color: Colors.white), // Optional: Change text color to white for better contrast
+                  _currentIndex < (questions.length - 1)
+                      ? 'Next Question'
+                      : 'Finish Quiz',
+                  style: TextStyle(
+                      color: Colors
+                          .white), // Optional: Change text color to white for better contrast
                 ),
               ),
             ),
