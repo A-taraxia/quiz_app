@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:quiz_app/components/progress_bar.dart';
 
 class HomeContainer extends StatelessWidget {
   final String nickname;
@@ -26,13 +27,7 @@ class HomeContainer extends StatelessWidget {
         ),
         const SizedBox(height: 20),
         Center(
-          child: Text(
-            'Home Content Here',
-            style: TextStyle(
-              fontSize: 18,
-              color: Theme.of(context).colorScheme.onSurface.withOpacity(0.7),
-            ),
-          ),
+          child: ProgressBar()
         ),
       ],
     );
