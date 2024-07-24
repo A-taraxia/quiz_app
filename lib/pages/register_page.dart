@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:quiz_app/components/my_button.dart';
 import 'package:quiz_app/components/my_textfield.dart';
 import 'package:quiz_app/pages/home_page.dart';
+import 'package:quiz_app/pages/starter_page.dart';
 import 'package:quiz_app/services/auth/auth_services.dart';
 
 class RegisterPage extends StatefulWidget {
@@ -27,8 +28,8 @@ class _RegisterPageState extends State<RegisterPage> {
   void register() async {
     if (passwordController.text == confirmpasswordController.text) {
       try {
-        UserCredential userCredential =
-            await _authServices.signUpWithEmailPassword(
+        // Register the user
+        UserCredential userCredential = await _authServices.signUpWithEmailPassword(
           emailController.text,
           passwordController.text,
         );
@@ -37,32 +38,56 @@ class _RegisterPageState extends State<RegisterPage> {
         final uid = userCredential.user?.uid;
 
         if (uid != null) {
+          // Save user data to Firestore
           await _authServices.saveUserToFirestore(uid, nicknameController.text);
+
+          // Fetch nickname
           String? nickname = await _authServices.getNicknameFromFirestore(uid);
-          if (nickname != null) {
-            Navigator.push(
-              context,
-              MaterialPageRoute(
-                builder: (context) => HomePage(nickname: nickname),
-              ),
+
+          if (mounted) {
+            print('Nickname fetched: $nickname'); // Debug
+            if (nickname != null) {
+              // Navigate to StarterPage
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => StarterPage(nickname: nickname),
+                ),
+              );
+            } else {
+              // Handle case where nickname is not found
+              ScaffoldMessenger.of(context).showSnackBar(
+                SnackBar(content: Text('Nickname not found')),
+              );
+            }
+          }
+        } else {
+          // Handle case where UID is null
+          if (mounted) {
+            ScaffoldMessenger.of(context).showSnackBar(
+              SnackBar(content: Text('User ID not found')),
             );
-          } else {
-            // Handle case where nickname is not found
           }
         }
       } catch (e) {
         // Show an error message if registration fails
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('Registration failed: $e')),
-        );
+        if (mounted) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(content: Text('Registration failed: $e')),
+          );
+        }
       }
     } else {
       // Show an error message if passwords do not match
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('Passwords do not match')),
-      );
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(content: Text('Passwords do not match')),
+        );
+      }
     }
   }
+
+
 
   @override
   Widget build(BuildContext context) {

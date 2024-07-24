@@ -39,8 +39,8 @@ class _LoginPageState extends State<LoginPage> {
           Navigator.push(
             context,
             MaterialPageRoute(
-              //builder: (context) => HomePage(nickname: nickname),
-              builder: (context) => StarterPage(nickname: nickname,),
+              builder: (context) => HomePage(nickname: nickname),
+              //builder: (context) => StarterPage(nickname: nickname),
             ),
           );
         } else {

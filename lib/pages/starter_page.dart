@@ -69,15 +69,10 @@ class _StarterPageState extends State<StarterPage> {
         context: context,
         barrierDismissible: false,
         builder: (ctx) {
-          final userId = FirebaseAuth.instance.currentUser?.uid ?? '';
-          final doc = FirebaseFirestore.instance.collection('users').doc(userId).get();
-
-
-
           return ResultBox(
             result: _score,
             questionLength: questionsLength,
-            nickname: userId,
+            nickname: widget.nickname,
           );
         },
       );
