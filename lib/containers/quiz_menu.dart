@@ -47,7 +47,7 @@ class _QuizMenuState extends State<QuizMenu> {
                       context,
                       MaterialPageRoute(
                         builder: (context) =>
-                            QuizzesContainer(levelKey: level.title),
+                            QuizzesContainer(levelKey: level.id),
                       ),
                     );
                   },
