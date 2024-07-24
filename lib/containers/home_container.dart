@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:quiz_app/components/progress_bar.dart';
+import 'package:quiz_app/pages/starter_page.dart';
 
 class HomeContainer extends StatelessWidget {
   final String nickname;
@@ -27,7 +28,24 @@ class HomeContainer extends StatelessWidget {
         ),
         const SizedBox(height: 20),
         Center(
-          child: ProgressBar()
+          child: ProgressBar(),
+        ),
+        const SizedBox(height: 20),
+        Center(
+          child: ElevatedButton(
+            style: ElevatedButton.styleFrom(
+              backgroundColor: Colors.deepPurple,
+            ),
+            onPressed: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => StarterPage(nickname: nickname),
+                ),
+              );
+            },
+            child: const Text('Starter Quiz'),
+          ),
         ),
       ],
     );

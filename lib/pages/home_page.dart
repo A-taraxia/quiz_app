@@ -3,6 +3,7 @@ import 'package:quiz_app/components/my_drawer.dart';
 import 'package:quiz_app/containers/courses_container.dart';
 import 'package:quiz_app/containers/home_container.dart'; // Import the HomeContainer
 import 'package:quiz_app/containers/quiz_menu.dart';
+import 'package:quiz_app/pages/starter_page.dart';
 
 class HomePage extends StatefulWidget {
   final String nickname;
