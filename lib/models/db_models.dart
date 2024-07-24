@@ -22,6 +22,19 @@ class DBconnect {
         .replaceAll('/', '%2F');
   }
 
+  // Function to desanitize keys by replacing encoded characters with original characters
+  String desanitizeKey(String key) {
+    return key
+        .replaceAll('%3C', '<')
+        .replaceAll('%3E', '>')
+        .replaceAll('%2E', '.')
+        .replaceAll('%24', '\$')
+        .replaceAll('%5B', '[')
+        .replaceAll('%5D', ']')
+        .replaceAll('%23', '#')
+        .replaceAll('%2F', '/');
+  }
+
   Future<void> addLevel(Level level) async {
     final levelData = {
       'title': level.title,
@@ -67,11 +80,13 @@ class DBconnect {
     if (data != null) {
       data.forEach((key, value) {
         final level = Level(
+          id: value['id'],
           title: value['title'],
           questions: (value['questions'] as List<dynamic>).map((q) {
             return Question(
               title: q['title'],
-              options: Map<String, bool>.from(q['options']),
+              options: Map<String, bool>.from(
+                  q['options'].map((k, v) => MapEntry(desanitizeKey(k), v))),
             );
           }).toList(),
           courses: (value['courses'] as List<dynamic>).map((c) {
@@ -91,26 +106,34 @@ class DBconnect {
   }
 
   Future<Level> fetchLevel(String levelKey) async {
+    final sanitizedKey = sanitizeKey(levelKey);
     final levelUrl = Uri.parse(
-        'https://quizapp-3b15c-default-rtdb.firebaseio.com/levels/$levelKey.json');
+        'https://quizapp-3b15c-default-rtdb.firebaseio.com/levels/$sanitizedKey.json');
+
+    print('Fetching level data from: $levelUrl'); // Debugging URL
     final response = await http.get(levelUrl);
 
     if (response.statusCode != 200) {
+      print(
+          'Failed to load level: ${response.statusCode}'); // Debugging response
       throw Exception('Failed to load level');
     }
 
     final Map<String, dynamic>? data = json.decode(response.body);
+    print('Fetched level data: $data'); // Debugging fetched data
 
     if (data == null) {
       throw Exception('Level data is null');
     }
 
     final level = Level(
+      id: data['id'],
       title: data['title'],
       questions: (data['questions'] as List<dynamic>).map((q) {
         return Question(
           title: q['title'],
-          options: Map<String, bool>.from(q['options']),
+          options: Map<String, bool>.from(
+              q['options'].map((k, v) => MapEntry(desanitizeKey(k), v))),
         );
       }).toList(),
       courses: (data['courses'] as List<dynamic>).map((c) {

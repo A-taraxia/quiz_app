@@ -5,6 +5,7 @@ import 'package:quiz_app/models/question_models.dart';
 List<Level> getLevels() {
   return [
     Level(
+      id: '1Beginner',
       title: 'Beginner',
       questions: [
         Question(
@@ -93,6 +94,7 @@ List<Level> getLevels() {
       ],
     ),
     Level(
+      id: '2Intermediate',
       title: 'Intermediate',
       questions: [
         Question(
@@ -157,6 +159,7 @@ List<Level> getLevels() {
       ],
     ),
     Level(
+      id: '3Advanced',
       title: 'Advanced',
       questions: [
         Question(
@@ -212,6 +215,7 @@ List<Level> getLevels() {
       ],
     ),
     Level(
+      id: '4Expert',
       title: 'Expert',
       questions: [
         Question(
@@ -268,6 +272,7 @@ List<Level> getLevels() {
       ],
     ),
     Level(
+      id: '5Master',
       title: 'Master',
       questions: [
         Question(
