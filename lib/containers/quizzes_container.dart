@@ -43,7 +43,7 @@ class _QuizzesContainerState extends State<QuizzesContainer> {
           builder: (ctx) => ResultBox(
                 result: score,
                 questionLength: _questions.length,
-                startOver: startOver,
+                startOver: startOver, nickname: AutofillHints.nickname,
               ));
     } else {
       if (isPressed) {

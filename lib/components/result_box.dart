@@ -1,16 +1,21 @@
 import 'dart:math';
 
 import 'package:flutter/material.dart';
+import 'package:quiz_app/pages/home_page.dart';
 
 class ResultBox extends StatelessWidget {
-  const ResultBox(
-      {super.key,
-      required this.result,
-      required this.questionLength,
-      required this.startOver});
+  const ResultBox({
+    super.key,
+    required this.result,
+    required this.questionLength,
+    required this.nickname,
+    this.startOver,
+  });
+
   final int result;
   final int questionLength;
-  final VoidCallback startOver;
+  final String nickname;
+  final VoidCallback? startOver;
 
   @override
   Widget build(BuildContext context) {
@@ -30,7 +35,7 @@ class ResultBox extends StatelessWidget {
               height: 20,
             ),
             CustomPaint(
-              size: Size(180, 180), // Increased width and height of the star
+              size: Size(180, 180),
               painter: StarPainter(
                 result: result,
                 questionLength: questionLength,
@@ -45,30 +50,49 @@ class ResultBox extends StatelessWidget {
               result == questionLength.floor() / 2
                   ? 'Just Barely!'
                   : result < questionLength / 2
-                      ? 'Try Again!'
-                      : result == questionLength
-                          ? 'Perfect!'
-                          : 'Good!',
+                  ? 'Try Again!'
+                  : result == questionLength
+                  ? 'Perfect!'
+                  : 'Good!',
               style: Theme.of(context).textTheme.headlineSmall,
             ),
             const SizedBox(height: 25),
-            GestureDetector(
-              onTap: startOver,
-              child: Text(
-                'Start Over',
-                style: TextStyle(
-                    color: Theme.of(context).colorScheme.secondary,
-                    fontSize: 20,
-                    fontWeight: FontWeight.w500,
-                    letterSpacing: 1),
+            if (startOver != null)
+              GestureDetector(
+                onTap: startOver,
+                child: Text(
+                  'Start Over',
+                  style: TextStyle(
+                      color: Theme.of(context).colorScheme.secondary,
+                      fontSize: 20,
+                      fontWeight: FontWeight.w500,
+                      letterSpacing: 1),
+                ),
               ),
-            )
+            ElevatedButton(
+              onPressed: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => HomePage(nickname: nickname),
+                  ),
+                );
+              },
+              style: ElevatedButton.styleFrom(
+                backgroundColor: Colors.purple,
+              ),
+              child: Text(
+                'Go to Home',
+                style: TextStyle(color: Colors.white),
+              ),
+            ),
           ],
         ),
       ),
     );
   }
 }
+
 
 class StarPainter extends CustomPainter {
   final int result;
@@ -87,8 +111,8 @@ class StarPainter extends CustomPainter {
       ..color = result == questionLength / 2
           ? Colors.yellow.shade700
           : result < questionLength / 2
-              ? Colors.red
-              : Colors.green
+          ? Colors.red
+          : Colors.green
       ..style = PaintingStyle.fill;
 
     final Path path = Path();

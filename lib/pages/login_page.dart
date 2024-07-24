@@ -2,7 +2,9 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:quiz_app/components/my_button.dart';
 import 'package:quiz_app/components/my_textfield.dart';
+import 'package:quiz_app/containers/quiz_menu.dart';
 import 'package:quiz_app/pages/home_page.dart';
+import 'package:quiz_app/pages/starter_page.dart';
 import 'package:quiz_app/services/auth/auth_services.dart';
 
 class LoginPage extends StatefulWidget {
@@ -37,7 +39,8 @@ class _LoginPageState extends State<LoginPage> {
           Navigator.push(
             context,
             MaterialPageRoute(
-              builder: (context) => HomePage(nickname: nickname),
+              //builder: (context) => HomePage(nickname: nickname),
+              builder: (context) => StarterPage(nickname: nickname,),
             ),
           );
         } else {
