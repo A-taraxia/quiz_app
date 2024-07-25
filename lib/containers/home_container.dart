@@ -43,7 +43,11 @@ class HomeContainer extends StatelessWidget {
                   ),
                 );
               },
-              child: const Text('Starter Quiz'),
+              child: Text(
+                'Starter Quiz',
+                style:
+                    TextStyle(color: Theme.of(context).colorScheme.onSecondary),
+              ),
             ),
           ),
         ),

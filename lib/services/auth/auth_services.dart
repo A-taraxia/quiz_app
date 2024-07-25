@@ -9,6 +9,27 @@ class AuthServices {
     return _firebaseAuth.currentUser;
   }
 
+  Future<Map<String, Map<String, bool>>> getUserProgress(String uid) async {
+    try {
+      DocumentSnapshot<Map<String, dynamic>> userSnapshot =
+          await _firestore.collection('users').doc(uid).get();
+      if (userSnapshot.exists) {
+        final courses = userSnapshot.data()?['courses'] as Map<String, dynamic>;
+        return courses.map((key, value) => MapEntry(
+              key,
+              (value as Map<String, dynamic>).map(
+                (k, v) => MapEntry(k, v as bool),
+              ),
+            ));
+      } else {
+        return {};
+      }
+    } catch (e) {
+      print('Error fetching user progress from Firestore: $e');
+      return {};
+    }
+  }
+
   Future<String?> getNicknameFromFirestore(String uid) async {
     try {
       DocumentSnapshot<Map<String, dynamic>> userSnapshot =
@@ -59,10 +80,10 @@ class AuthServices {
       'level': 'beginner',
       'courses': {
         '1Beginner': {'0': false, '1': false},
-        '2Intermediate': {'2': false, '3': false},
-        '3Advanced': {'4': false, '5': false},
-        '4Expert': {'6': false, '7': false},
-        '5Master': {'8': false, '9': false},
+        '2Intermediate': {'0': false, '1': false},
+        '3Advanced': {'0': false, '1': false},
+        '4Expert': {'0': false, '1': false},
+        '5Master': {'0': false, '1': false},
       },
       'quizzes': {
         '1Beginner': 0,
@@ -197,6 +218,32 @@ class AuthServices {
     } catch (e) {
       print('Error fetching total quiz score from Firestore: $e');
       return 0;
+    }
+  }
+
+  Future<bool> checkCoursesCompletion(String levelKey) async {
+    User? user = getCurrentUser();
+    if (user == null) {
+      throw Exception("User not logged in");
+    }
+
+    try {
+      DocumentSnapshot<Map<String, dynamic>> userDoc =
+          await _firestore.collection('users').doc(user.uid).get();
+      if (userDoc.exists) {
+        Map<String, dynamic> courses =
+            userDoc.data()?['courses'][levelKey] ?? {};
+        if (courses['0'] == true && courses['1'] == true) {
+          return true;
+        } else {
+          return false;
+        }
+      } else {
+        return false;
+      }
+    } catch (e) {
+      print('Error checking course completion status: $e');
+      return false;
     }
   }
 }

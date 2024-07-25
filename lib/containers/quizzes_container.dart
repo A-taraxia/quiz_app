@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:quiz_app/components/next_button.dart';
 import 'package:quiz_app/components/option_card.dart';
@@ -23,12 +24,41 @@ class _QuizzesContainerState extends State<QuizzesContainer> {
   final AuthServices _authServices = AuthServices();
 
   String? nickname;
+  bool coursesCompleted = false;
 
   @override
   void initState() {
     super.initState();
-    _questionsFuture = _fetchQuestionsForLevel(widget.levelKey);
     _fetchNickname();
+    _checkCoursesAndFetchQuestions();
+  }
+
+  Future<void> _fetchNickname() async {
+    nickname = await _authServices.getNickname();
+    setState(() {});
+  }
+
+  Future<void> _checkCoursesAndFetchQuestions() async {
+    User? user = _authServices.getCurrentUser();
+    if (user != null) {
+      Map<String, Map<String, bool>> userProgress =
+          await _authServices.getUserProgress(user.uid);
+      Map<String, bool>? levelProgress = userProgress[widget.levelKey];
+
+      if (levelProgress != null &&
+          levelProgress['0'] == true &&
+          levelProgress['1'] == true) {
+        setState(() {
+          coursesCompleted = true;
+          _questionsFuture = _fetchQuestionsForLevel(widget.levelKey);
+        });
+      } else {
+        setState(() {
+          coursesCompleted = false;
+        });
+        _showCourseIncompleteDialog();
+      }
+    }
   }
 
   Future<List<Question>> _fetchQuestionsForLevel(String levelKey) async {
@@ -36,9 +66,27 @@ class _QuizzesContainerState extends State<QuizzesContainer> {
     return level.questions;
   }
 
-  Future<void> _fetchNickname() async {
-    nickname = await _authServices.getNickname();
-    setState(() {});
+  void _showCourseIncompleteDialog() {
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          return AlertDialog(
+            title: const Text('Course Incomplete'),
+            content: const Text(
+                'Complete all courses of this level to access the quiz.'),
+            actions: <Widget>[
+              TextButton(
+                child: const Text('OK'),
+                onPressed: () {
+                  Navigator.of(context).pop();
+                },
+              ),
+            ],
+          );
+        },
+      );
+    });
   }
 
   int index = 0;
@@ -111,26 +159,31 @@ class _QuizzesContainerState extends State<QuizzesContainer> {
         ],
       ),
       backgroundColor: Theme.of(context).colorScheme.surface,
-      body: FutureBuilder<List<Question>>(
-        future: _questionsFuture,
-        builder: (context, snapshot) {
-          if (snapshot.connectionState == ConnectionState.waiting) {
-            return const Center(child: CircularProgressIndicator());
-          } else if (snapshot.hasError) {
-            return Center(child: Text('Error: ${snapshot.error}'));
-          } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
-            return const Center(child: Text('No questions available.'));
-          } else {
-            _questions = snapshot.data!;
-            return _buildQuizContent();
-          }
-        },
-      ),
-      floatingActionButton: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 10.0),
-        child: NextButton(nextQuestion: nextQuestion),
-      ),
-      floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
+      body: coursesCompleted
+          ? FutureBuilder<List<Question>>(
+              future: _questionsFuture,
+              builder: (context, snapshot) {
+                if (snapshot.connectionState == ConnectionState.waiting) {
+                  return const Center(child: CircularProgressIndicator());
+                } else if (snapshot.hasError) {
+                  return Center(child: Text('Error: ${snapshot.error}'));
+                } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
+                  return const Center(child: Text('No questions available.'));
+                } else {
+                  _questions = snapshot.data!;
+                  return _buildQuizContent();
+                }
+              },
+            )
+          : Container(), // Do nothing and stay on the same page
+      floatingActionButton: coursesCompleted
+          ? Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 10.0),
+              child: NextButton(nextQuestion: nextQuestion),
+            )
+          : null,
+      floatingActionButtonLocation:
+          coursesCompleted ? FloatingActionButtonLocation.centerFloat : null,
     );
   }
 
